@@ -1,0 +1,30 @@
+const int sensorPin = A0;   // Pin analog untuk membaca sensor raindrop
+const int buzzerPin = A1;    // Pin digital untuk mengendalikan buzzer
+
+void setup() {
+  Serial.begin(9600);   // Inisialisasi komunikasi serial
+  pinMode(buzzerPin, OUTPUT);   // Set pin buzzer sebagai OUTPUT
+}
+
+void loop() {
+  // Baca nilai dari sensor raindrop
+  int sensorValue = analogRead(sensorPin);
+
+  // Konversi nilai sensor ke kedalaman air
+  float depth = map(sensorValue, 0, 1023, 5, 0);   // Mengubah rentang nilai ke dalam rentang kedalaman (misalnya, 0-100 cm)
+
+  // Tampilkan hasil kedalaman air ke serial monitor
+  Serial.print("Kedalaman Air: ");
+  Serial.print(depth);
+  Serial.println(" cm");
+
+  // Aktifkan buzzer jika kedalaman air melebihi batas tertentu (misalnya, 50 cm)
+  if (depth > 3 ) {
+    digitalWrite(buzzerPin, HIGH);   // Nyalakan buzzer
+  } else {
+    digitalWrite(buzzerPin, LOW);    // Matikan buzzer
+    delay(1000);
+  }
+
+  delay(1000);   // Tunggu 1 detik sebelum membaca sensor lagi
+}
